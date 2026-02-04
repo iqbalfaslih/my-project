@@ -15,7 +15,13 @@ function App() {
 
 
   return(
-    <div style={{padding: "20px"}}>
+    <div className="bg-green-600">
+      <h1>Daftar Users</h1>
+      <h1>Daftar Users</h1>
+      <h1>Daftar Users</h1>
+      <h1>Daftar Users</h1>
+      <h1>Daftar Users</h1>
+      <h1>Daftar Users</h1>
       <h1>Daftar Users</h1>
       <UserList users={users}/>
     </div>
