@@ -1,15 +1,31 @@
-const API_URL = "http://localhost:5000/api";
+import axios from "axios";
+
+const api = axios.create({
+  baseURL: "http://localhost:5000/api",
+});
 
 export const fetchUsers = async () => {
-    try {
-        const response = await fetch(`${API_URL}/users`);
-        if (!response.ok) {
-            throw new Error("gagal mengambil data");
-        }
-        const data = await response.json();
-        return data;
-    } catch (error) {
-        console.error(error);
-        return [];
-    }
+  const res = await api.get("/users");
+  return res.data;
+};
+
+export const createUsers = async (data) => {
+  const res = await api.post("/users", data);
+  return res.data;
+};
+
+export const deleteUser = async (id) => {
+  try {
+    await api.delete(`/users/${id}`);
+  } catch (err) {
+    throw new Error("Gagal menghapus user");
+  }
+};
+
+export const updateUser = async (id, data) => {
+  try {
+    await api.put(`/users/${id}`, data);
+  } catch (err) {
+    throw new Error("Gagal mengupdate user");
+  }
 };
