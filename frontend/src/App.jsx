@@ -24,7 +24,7 @@ function App() {
 
     try {
       const newUser = await createUsers({ name });
-      setUsers((prev) => [...prev, newUser]); // langsung update state
+      setUsers((prev) => [...prev, newUser]);
     } catch (err) {
       alert("Gagal menambahkan user");
       console.error(err);
@@ -35,7 +35,7 @@ function App() {
   const handleDelete = async (id) => {
     try {
       await deleteUser(id);
-      setUsers((prev) => prev.filter((u) => u.id !== id)); // langsung update state
+      setUsers((prev) => prev.filter((u) => u.id !== id));
     } catch (err) {
       alert("Gagal menghapus user");
       console.error(err);
@@ -51,7 +51,7 @@ function App() {
       await updateUser(user.id, { name: newName });
       setUsers((prev) =>
         prev.map((u) => (u.id === user.id ? { ...u, name: newName } : u))
-      ); // langsung update state
+      );
     } catch (err) {
       alert("Gagal mengupdate user");
       console.error(err);
@@ -60,7 +60,9 @@ function App() {
 
   return (
     <div className="min-h-screen w-full bg-gradient-to-br from-green-400 via-blue-500 to-purple-600 p-8 flex flex-col items-center">
-      <h1 className="text-4xl font-bold text-white mb-6 drop-shadow-lg">Daftar Users</h1>
+      <h1 className="text-4xl font-bold text-white mb-6 drop-shadow-lg">
+        Daftar Users
+      </h1>
 
       <button
         onClick={handleAddUser}
