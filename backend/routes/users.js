@@ -12,9 +12,8 @@ router.get("/", (req, res) => {
   res.json(users);
 });
 
-// POST create user  ✅
+// POST create user
 router.post("/", (req, res) => {
-  console.log("POST /api/users masuk:", req.body); // debug
   const { name } = req.body;
   if (!name) return res.status(400).json({ message: "Nama user dibutuhkan" });
 
@@ -38,7 +37,7 @@ router.put("/:id", (req, res) => {
   const { name } = req.body;
 
   const userExists = users.some(user => user.id === id);
-  if (!userExists) return res.status(404).json({ message: "user tidak ditemukan" });
+  if (!userExists) return res.status(404).json({ message: "User tidak ditemukan" });
   if (!name) return res.status(400).json({ message: "Nama user dibutuhkan" });
 
   users = users.map(user =>

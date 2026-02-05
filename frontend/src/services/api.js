@@ -15,17 +15,9 @@ export const createUsers = async (data) => {
 };
 
 export const deleteUser = async (id) => {
-  try {
-    await api.delete(`/users/${id}`);
-  } catch (err) {
-    throw new Error("Gagal menghapus user");
-  }
+  await api.delete(`/users/${id}`);
 };
 
 export const updateUser = async (id, data) => {
-  try {
-    await api.put(`/users/${id}`, data);
-  } catch (err) {
-    throw new Error("Gagal mengupdate user");
-  }
+  await api.put(`/users/${id}`, data);
 };
