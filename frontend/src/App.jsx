@@ -1,48 +1,75 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import { fetchUsers, createUsers, deleteUser, updateUser } from "./services/api";
 import UserList from "./components/UserList";
 
 function App() {
   const [users, setUsers] = useState([]);
 
+  // Ambil data awal saat load
   useEffect(() => {
     const getUsers = async () => {
       const data = await fetchUsers();
       setUsers(data);
     };
     getUsers();
-  },[]);
-  
-  const handleAddUser = async()=>{
-    await createUsers({name: "budi"});
-    const data = await fetchUsers();
-    setUsers(data);
-  };
+  }, []);
 
-  const handleDelete = async (id) =>{
-    await deleteUser(id);
-    const data = await fetchUsers();
-    setUsers(data);
-  };
+  // Tambah user
+  const handleAddUser = async () => {
+    const name = prompt("Masukkan nama user baru:");
+    if (!name) {
+      alert("Nama tidak boleh kosong");
+      return;
+    }
 
-  const handleEdit = async(user) => {
-    const newName = prompt("masukkan nama baru:", user.name);
-    if (newName) {
-      await updateUser(user.id, {name: newName});
-      const data = await fetchUsers();
-      setUsers(data);
+    try {
+      const newUser = await createUsers({ name });
+      setUsers((prev) => [...prev, newUser]); // langsung update state
+    } catch (err) {
+      alert("Gagal menambahkan user");
+      console.error(err);
     }
   };
 
-  return(
-    <div className="p-16 bg-red-500">
-      <h1>Daftar Users</h1>
-      <button onClick={handleAddUser} className="mb-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600" >
-        tambah
+  // Hapus user
+  const handleDelete = async (id) => {
+    try {
+      await deleteUser(id);
+      setUsers((prev) => prev.filter((u) => u.id !== id)); // langsung update state
+    } catch (err) {
+      alert("Gagal menghapus user");
+      console.error(err);
+    }
+  };
+
+  // Edit user
+  const handleEdit = async (user) => {
+    const newName = prompt("Masukkan nama baru:", user.name);
+    if (!newName) return;
+
+    try {
+      await updateUser(user.id, { name: newName });
+      setUsers((prev) =>
+        prev.map((u) => (u.id === user.id ? { ...u, name: newName } : u))
+      ); // langsung update state
+    } catch (err) {
+      alert("Gagal mengupdate user");
+      console.error(err);
+    }
+  };
+
+  return (
+    <div className="min-h-screen w-full bg-gradient-to-br from-green-400 via-blue-500 to-purple-600 p-8 flex flex-col items-center">
+      <h1 className="text-4xl font-bold text-white mb-6 drop-shadow-lg">Daftar Users</h1>
+
+      <button
+        onClick={handleAddUser}
+        className="mb-6 px-6 py-2 bg-green-500 text-white font-semibold rounded-xl shadow hover:bg-green-600 transition"
+      >
+        Tambah User
       </button>
-      <UserList users={users}
-       onDelete={handleDelete}
-       onEdit={handleEdit}/>
+
+      <UserList users={users} onDelete={handleDelete} onEdit={handleEdit} />
     </div>
   );
 }

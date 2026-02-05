@@ -1,23 +1,31 @@
 import axios from "axios";
 
-export const api = axios.create({
+const api = axios.create({
   baseURL: "http://localhost:5000/api",
 });
 
-export const updateUser = async (id, data) => {
-  try {
-    const res = await api.put(`/users/${id}`, data);
-    return res.data;
-  } catch (err) {
-    throw new Error("Gagal mengupdate user");
-  }
+export const fetchUsers = async () => {
+  const res = await api.get("/users");
+  return res.data;
+};
+
+export const createUsers = async (data) => {
+  const res = await api.post("/users", data);
+  return res.data;
 };
 
 export const deleteUser = async (id) => {
   try {
-    const res = await api.delete(`/users/${id}`);
-    return res.data;
+    await api.delete(`/users/${id}`);
   } catch (err) {
     throw new Error("Gagal menghapus user");
+  }
+};
+
+export const updateUser = async (id, data) => {
+  try {
+    await api.put(`/users/${id}`, data);
+  } catch (err) {
+    throw new Error("Gagal mengupdate user");
   }
 };
